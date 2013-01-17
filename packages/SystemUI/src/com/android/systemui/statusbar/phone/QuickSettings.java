@@ -89,7 +89,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.internal.telephony.PhoneConstants;
-import com.android.systemui.aokp.AwesomeAction;
+import com.android.systemui.aokp.AokpTarget;
 
 import java.io.File;
 import java.io.InputStream;
@@ -182,6 +182,8 @@ class QuickSettings {
     private ConnectivityManager mConnService;
     private NfcAdapter mNfcAdapter;
 
+    private AokpTarget mAokpTarget;
+
     private BrightnessController mBrightnessController;
     private BluetoothController mBluetoothController;
 
@@ -260,6 +262,8 @@ class QuickSettings {
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         mBluetoothState = new QuickSettingsModel.BluetoothState();
         mHandler = new Handler();
+
+        mAokpTarget = new AokpTarget(mContext);
 
         Resources r = mContext.getResources();
         mBatteryLevels = (LevelListDrawable) r.getDrawable(R.drawable.qs_sys_battery);
@@ -777,7 +781,7 @@ class QuickSettings {
                 quick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AwesomeAction.getInstance(mContext).launchAction(AwesomeAction.ACTION_VIB);
+                        mAokpTarget.launchAction(mAokpTarget.ACTION_VIB);
                         mModel.refreshVibrateTile();
                     }
                 });
@@ -805,7 +809,7 @@ class QuickSettings {
                 quick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AwesomeAction.getInstance(mContext).launchAction(AwesomeAction.ACTION_SILENT);
+                        mAokpTarget.launchAction(mAokpTarget.ACTION_SILENT);
                         mModel.refreshSilentTile();
                     }
                 });
@@ -833,7 +837,7 @@ class QuickSettings {
                 quick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AwesomeAction.getInstance(mContext).launchAction(AwesomeAction.ACTION_TORCH);
+                        mAokpTarget.launchAction(mAokpTarget.ACTION_TORCH);
                         mHandler.postDelayed(delayedRefresh, 1000);
                     }
                 });

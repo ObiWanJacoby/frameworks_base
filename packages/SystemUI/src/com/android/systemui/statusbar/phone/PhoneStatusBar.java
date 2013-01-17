@@ -100,7 +100,7 @@ import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.policy.OnSizeChangedListener;
 import com.android.systemui.statusbar.policy.Prefs;
-import com.android.systemui.aokp.AwesomeAction;
+import com.android.systemui.aokp.AokpTarget;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -173,6 +173,8 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     StatusBarWindowView mStatusBarWindow;
     PhoneStatusBarView mStatusBarView;
+
+    private AokpTarget mAokpTarget;
 
     int mPixelFormat;
     Object mQueueLock = new Object();
@@ -365,6 +367,8 @@ public class PhoneStatusBar extends BaseStatusBar {
     // ================================================================================
     protected PhoneStatusBarView makeStatusBarView() {
         final Context context = mContext;
+
+        mAokpTarget = new AokpTarget(mContext);
 
         Resources res = context.getResources();
 
@@ -2215,7 +2219,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             public void run() {
                     doubleClickCounter = 0;
                     animateCollapsePanels();
-                    AwesomeAction.getInstance(mContext).launchAction(mClockActions[shortClick]);
+                    mAokpTarget.launchAction(mClockActions[shortClick]);
             }
         };
 
@@ -2232,7 +2236,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                     mHandler.removeCallbacks(DelayShortPress);
                     vibrate();
                     animateCollapsePanels();
-                    AwesomeAction.getInstance(mContext).launchAction(mClockActions[doubleClick]);
+                    mAokpTarget.launchAction(mClockActions[doubleClick]);
                     mHandler.postDelayed(ResetDoubleClickCounter, 50);
                 } else {
                     doubleClickCounter = doubleClickCounter + 1;
@@ -2242,7 +2246,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             } else {
                 vibrate();
                 animateCollapsePanels();
-                AwesomeAction.getInstance(mContext).launchAction(mClockActions[shortClick]);
+                mAokpTarget.launchAction(mClockActions[shortClick]);
             }
 
         }
@@ -2252,7 +2256,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         @Override
         public boolean onLongClick(View v) {
             animateCollapsePanels();
-            AwesomeAction.getInstance(mContext).launchAction(mClockActions[longClick]);
+            mAokpTarget.launchAction(mClockActions[longClick]);
             return true;
         }
     };
