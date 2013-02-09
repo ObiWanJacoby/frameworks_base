@@ -3310,16 +3310,6 @@ public final class Settings {
          * @hide
          */
         public static final String STATUSBAR_SIGNAL_CLUSTER_ALT = "statusbar_signal_cluster_alt";
-
-        /**
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_ALPHA_CONFIG = "navigation_bar_alpha_config";
-
-        /**
-         * @hide
-         */
-        public static final String STATUS_BAR_ALPHA_CONFIG = "status_bar_alpha_config";
     }
 
     /**
