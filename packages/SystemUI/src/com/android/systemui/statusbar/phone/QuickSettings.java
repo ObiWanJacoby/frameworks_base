@@ -172,7 +172,7 @@ public class QuickSettings {
 
     private boolean usbTethered;
 
-	private Calendar mCalendar;
+    private Calendar mCalendar;
     private Context mContext;
     private PanelBar mBar;
     private QuickSettingsModel mModel;
@@ -210,7 +210,7 @@ public class QuickSettings {
     private String userToggles = null;
     private long tacoSwagger = 0;
     private boolean tacoToggle = false;
-	private boolean sundayToggle = false;
+    private boolean sundayToggle = false;
     private int mTileTextSize = 12;
     private String mFastChargePath;
 
@@ -286,7 +286,7 @@ public class QuickSettings {
         filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(Intent.ACTION_USER_SWITCHED);
-		filter.addAction(Inent.ACTION_TIME_TICK);
+	filter.addAction(Inent.ACTION_TIME_TICK);
         mContext.registerReceiver(mReceiver, filter);
 
         IntentFilter profileFilter = new IntentFilter();
@@ -1313,44 +1313,45 @@ public class QuickSettings {
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
                                 if (sundayToggle) {
-									mBar.collapseAllPanels(true);
-									Toast.makeText(mContext, R.string.quick_settings_swaggersuntoast,
-										Toast.LENGTH_LONG).show();
+				    mBar.collapseAllPanels(true);
+				    Toast.makeText(mContext, R.string.quick_settings_swaggersuntoast,
+				    	Toast.LENGTH_LONG).show();
                                     tacoSwagger = event.getEventTime();
                                 } else {
-									if (tacoToggle) {
-										TextView tv = (TextView) v.findViewById(R.id.swagger_textview);
-										tv.setText(R.string.quick_settings_swagger);
-										tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_qs_swagger, 0, 0);
+				    if (tacoToggle) {
+				    	TextView tv = (TextView) v.findViewById(R.id.swagger_textview);
+					tv.setText(R.string.quick_settings_swagger);
+					tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_qs_swagger, 0, 0);
                                     	tacoSwagger = event.getEventTime();
-										tacoToggle = false;
-                                	} else {
-										tacoSwagger = event.getEventTime();
-									}
-								}
+					tacoToggle = false;
+                                    } else {
+					tacoSwagger = event.getEventTime();
+				    }
+				}
+
                                 	break;
                             	case MotionEvent.ACTION_UP:
-                                	if ((event.getEventTime() - tacoSwagger) > 2500) {
+                                    if ((event.getEventTime() - tacoSwagger) > 2500) {
                                     	TextView tv = (TextView) v.findViewById(R.id.swagger_textview);
                                     	tv.setText(R.string.quick_settings_fbgt);
                                     	tv.setTextSize(1, mTileTextSize);
                                     	tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_qs_fbgt_on, 0, 0);
                                     	tacoToggle = true;
-                                	}
-                                	break;
-                        	}
-                        	return true;
+                                    }
+                                    break;
+                            }
+                       	    return true;
                     	}
-					});
-				mModel.addSwaggerTile(quick, new QuickSettingsModel.RefreshCallback() {
-					@Override
-					public void refreshView(QuickSettingsTileView view, State state) {
-						TextView tv = (TextView) view,findViewById(R.id.swagger_textview);
-						tv.setTextSize(1, mTileTextSize);
-						tv.setCompoundDrawablesWithIntrinsicBounds(0, state.iconId, 0, 0);
-						tv.setText(state.label);
-						tv.setTextSize(1, mTileTextSize);
-					}
+		    }); 
+		mModel.addSwaggerTile(quick, new QuickSettingsModel.RefreshCallback() {
+		    @Override
+ 		    public void refreshView(QuickSettingsTileView view, State state) {
+			TextView tv = (TextView) view,findViewById(R.id.swagger_textview)
+			tv.setTextSize(1, mTileTextSize);
+			tv.setCompoundDrawablesWithIntrinsicBounds(0, state.iconId, 0, 0);
+			tv.setText(state.label);
+			tv.setTextSize(1, mTileTextSize);
+         	    }
                 });
                 break;
             case FAV_CONTACT_TILE:
@@ -1689,9 +1690,24 @@ public class QuickSettings {
             } else if (Intent.ACTION_USER_SWITCHED.equals(action)) {
                 reloadUserInfo();
                 reloadFavContactInfo();
+	    } else if (Intent.ACTION_TIME_TICK.equals(action)) {
+		updateClock();
             }
         }
     };
+
+    final void updateClock() {
+	mCalendar = Calendar.getInstance();
+	if (mCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+	    if (sundayToggle == false) {
+		sundayToggle = true;
+	    }
+	} else {
+	    if (sundayToggle == true) {
+		sundayToggle = false;
+	    }
+	}
+    }
 
     private final BroadcastReceiver mProfileReceiver = new BroadcastReceiver() {
         @Override
